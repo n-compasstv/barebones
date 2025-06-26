@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events Showcase</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        overflow: hidden;
+      }
+
+      .container {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      /* Left side - Image */
+      .image-section {
+        position: relative;
+        width: 60%;
+        height: 100%;
+      }
+
+      .event-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.7s ease-in-out;
+      }
+
+      .image-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      /* Right side - Event Details */
+      .details-section {
+        width: 40%;
+        background: #000;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .background-pattern {
+        position: absolute;
+        inset: 0;
+        opacity: 0.05;
+      }
+
+      .pattern-circle {
+        position: absolute;
+        width: 24rem;
+        height: 24rem;
+        background: white;
+        border-radius: 50%;
+        filter: blur(3rem);
+      }
+
+      .pattern-circle-1 {
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+      }
+
+      .pattern-circle-2 {
+        bottom: 0;
+        right: 0;
+        transform: translate(50%, 50%);
+      }
+
+      .content {
+        position: relative;
+        z-index: 10;
+      }
+
+      .logo-container {
+        margin-bottom: 3rem;
+      }
+
+      .logo {
+        height: 15rem;
+        width: auto;
+      }
+
+      .event-details {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .event-title {
+        font-size: 4rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        background: linear-gradient(to right, white, #d1d5db);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.1;
+      }
+
+      .event-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .info-line {
+        width: 0.25rem;
+        height: 5rem;
+        background: linear-gradient(to bottom, white, #9ca3af);
+        border-radius: 9999px;
+        flex-shrink: 0;
+      }
+
+      .info-line-tall {
+        height: 7rem;
+      }
+
+      .info-content {
+        flex: 1;
+      }
+
+      .info-label {
+        color: #9ca3af;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+
+      .info-value {
+        font-size: 2.5rem;
+        font-weight: 300;
+      }
+
+      .description {
+        font-size: 2rem;
+        line-height: 2.4rem;
+        color: #e5e7eb;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .image-section,
+        .details-section {
+          width: 100%;
+          height: 50%;
+        }
+
+        .details-section {
+          padding: 2rem;
+        }
+
+        .event-title {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left side - Image -->
+      <div class="image-section">
+        <img id="event-image" src="" alt="Event Image" class="event-image" />
+        <div class="image-overlay"></div>
+      </div>
+
+      <!-- Right side - Event Details -->
+      <div class="details-section">
+        <div class="background-pattern">
+          <div class="pattern-circle pattern-circle-1"></div>
+          <div class="pattern-circle pattern-circle-2"></div>
+        </div>
+
+        <div class="content">
+          <!-- Logo -->
+          <div class="logo-container">
+            <img
+              src="https://cdn.prod.website-files.com/68129ce31f29f3986a81f981/682b54172559217b05a7e185_BB-REV.png"
+              alt="Logo"
+              class="logo"
+            />
+          </div>
+
+          <!-- Event Details -->
+          <div class="event-details">
+            <h1 id="event-title" class="event-title"></h1>
+
+            <div class="event-info">
+              <div class="info-item">
+                <div class="info-line"></div>
+                <div class="info-content">
+                  <p class="info-label">Date</p>
+                  <p id="event-date" class="info-value"></p>
+                </div>
+              </div>
+
+              <div id="location-item" class="info-item" style="display: none">
+                <div class="info-line"></div>
+                <div class="info-content">
+                  <p class="info-label">Location</p>
+                  <p id="event-location" class="info-value"></p>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-line info-line-tall"></div>
+                <div class="info-content">
+                  <p class="info-label">Description</p>
+                  <p id="event-description" class="info-value description"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      class EventsShowcase {
+        constructor() {
+          this.baseApiUrl =
+            "https://webhook-dev.n-compass.online/api/firestore/captured_lists/webflow.io";
+          this.cacheKey = "events_data";
+          this.indexKey = "current_event_index";
+          this.urlParamsKey = "url_params_cache";
+          this.events = [];
+          this.currentIndex = 0;
+          this.currentUrlParams = "";
+
+          this.init();
+          this.setupUrlChangeListener();
+        }
+
+        async init() {
+          console.log("EventsShowcase initializing...");
+          this.currentUrlParams = this.getUrlParams();
+          await this.loadEvents();
+          this.loadCurrentIndex();
+          this.displayCurrentEvent();
+          this.logStyleInfo();
+        }
+
+        getUrlParams() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const from = urlParams.get("from");
+          const to = urlParams.get("to");
+
+          let params = "";
+          if (from) {
+            params += `?from=${encodeURIComponent(from)}`;
+          }
+          if (to) {
+            params += `${params ? "&" : "?"}to=${encodeURIComponent(to)}`;
+          }
+
+          console.log("Current URL params:", params);
+          return params;
+        }
+
+        get apiUrl() {
+          return this.baseApiUrl + this.currentUrlParams;
+        }
+
+        setupUrlChangeListener() {
+          // Listen for popstate events (back/forward button)
+          window.addEventListener("popstate", () => {
+            this.handleUrlChange();
+          });
+
+          // Listen for pushstate/replacestate (programmatic navigation)
+          const originalPushState = history.pushState;
+          const originalReplaceState = history.replaceState;
+
+          history.pushState = (...args) => {
+            originalPushState.apply(history, args);
+            this.handleUrlChange();
+          };
+
+          history.replaceState = (...args) => {
+            originalReplaceState.apply(history, args);
+            this.handleUrlChange();
+          };
+        }
+
+        async handleUrlChange() {
+          const newUrlParams = this.getUrlParams();
+
+          if (newUrlParams !== this.currentUrlParams) {
+            console.log(
+              "URL parameters changed, busting cache and reloading events"
+            );
+            this.currentUrlParams = newUrlParams;
+
+            // Clear the cache
+            this.bustCache();
+
+            // Reload events with new parameters
+            await this.loadEvents();
+            this.currentIndex = 0; // Reset to first event
+            this.saveCurrentIndex();
+            this.displayCurrentEvent();
+          }
+        }
+
+        bustCache() {
+          localStorage.removeItem(this.cacheKey);
+          localStorage.removeItem(this.cacheKey + "_timestamp");
+          localStorage.removeItem(this.urlParamsKey);
+          console.log("Cache busted");
+        }
+
+        logStyleInfo() {
+          // Log current styles to help debug
+          const logo = document.querySelector(".logo");
+          const title = document.querySelector(".event-title");
+          const dateEl = document.querySelector("#event-date");
+          const descEl = document.querySelector("#event-description");
+
+          if (logo)
+            console.log(
+              "Logo computed height:",
+              window.getComputedStyle(logo).height
+            );
+          if (title)
+            console.log(
+              "Title computed font-size:",
+              window.getComputedStyle(title).fontSize
+            );
+          if (dateEl)
+            console.log(
+              "Date computed font-size:",
+              window.getComputedStyle(dateEl).fontSize
+            );
+          if (descEl)
+            console.log(
+              "Description computed font-size:",
+              window.getComputedStyle(descEl).fontSize
+            );
+        }
+
+        async loadEvents() {
+          // Check if URL params changed since last cache
+          const cachedUrlParams = localStorage.getItem(this.urlParamsKey);
+          if (cachedUrlParams !== this.currentUrlParams) {
+            console.log("URL params changed, clearing cache");
+            this.bustCache();
+          }
+
+          // Try to get cached data first
+          const cachedData = localStorage.getItem(this.cacheKey);
+          const cacheTimestamp = localStorage.getItem(
+            this.cacheKey + "_timestamp"
+          );
+          const now = Date.now();
+          const cacheAge =
+            now - (cacheTimestamp ? parseInt(cacheTimestamp) : 0);
+          const cacheExpiry = 30 * 60 * 1000; // 30 minutes
+
+          if (
+            cachedData &&
+            cacheAge < cacheExpiry &&
+            cachedUrlParams === this.currentUrlParams
+          ) {
+            this.events = JSON.parse(cachedData);
+            console.log("Using cached events data");
+            return;
+          }
+
+          // Fetch fresh data from API
+          try {
+            console.log("Fetching events from API:", this.apiUrl);
+            const response = await fetch(this.apiUrl);
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            this.events = data;
+
+            // Cache the data with URL params
+            localStorage.setItem(this.cacheKey, JSON.stringify(data));
+            localStorage.setItem(this.cacheKey + "_timestamp", now.toString());
+            localStorage.setItem(this.urlParamsKey, this.currentUrlParams);
+
+            console.log(
+              "Events loaded and cached:",
+              this.events.length,
+              "events"
+            );
+          } catch (error) {
+            console.error("Error fetching events:", error);
+
+            // Fallback to cached data even if expired
+            if (cachedData) {
+              this.events = JSON.parse(cachedData);
+              console.log("Using expired cached data as fallback");
+            } else {
+              // Use fallback data if no cache exists
+              this.events = this.getFallbackData();
+              console.log("Using fallback data");
+            }
+          }
+        }
+
+        getFallbackData() {
+          return [
+            {
+              uid: "events-1750321957272-0",
+              Title: "Riley & Co",
+              Location: "",
+              Date: "2025-05-02",
+              Description: "Riley & Co",
+              ImageUrl: [
+                "https://cdn.prod.website-files.com/681510b9cd38a59b73812508/6815462afcf3334f91dc7592_681544566fcd5228f95f785b_riley-co.jpeg",
+              ],
+              Link: "",
+            },
+            {
+              uid: "events-1750321957273-1",
+              Title: "Remains of Radio",
+              Location: "",
+              Date: "2025-05-03",
+              Description: "Remains of Radio",
+              ImageUrl: [
+                "https://cdn.prod.website-files.com/681510b9cd38a59b73812508/6815462afdd478758385cb6c_68154457b5cb9a21de04c587_remains-radio.jpeg",
+              ],
+              Link: "",
+            },
+            {
+              uid: "events-1750321957273-2",
+              Title: "Breakfast & Brunch Sundays",
+              Location: "",
+              Date: "2025-05-04",
+              Description: "Weekly Sunday at 10:00 am - 2:00 pm",
+              ImageUrl: [
+                "https://cdn.prod.website-files.com/681510b9cd38a59b73812508/6815462a4a4e0a8511128e81_68154456c2e37799f1ebcf29_breakfast.jpeg",
+              ],
+              Link: "",
+            },
+          ];
+        }
+
+        loadCurrentIndex() {
+          const savedIndex = localStorage.getItem(this.indexKey);
+          if (
+            savedIndex !== null &&
+            !isNaN(parseInt(savedIndex)) &&
+            this.events.length > 0
+          ) {
+            this.currentIndex = parseInt(savedIndex) % this.events.length;
+          } else {
+            this.currentIndex = 0;
+          }
+          console.log("Loaded current index:", this.currentIndex);
+        }
+
+        saveCurrentIndex() {
+          localStorage.setItem(this.indexKey, this.currentIndex.toString());
+        }
+
+        displayCurrentEvent() {
+          if (this.events.length === 0) {
+            console.error("No events to display");
+            return;
+          }
+
+          const event = this.events[this.currentIndex];
+          console.log("Displaying event:", event.Title);
+
+          // Update image
+          const imageEl = document.getElementById("event-image");
+          imageEl.src =
+            event.ImageUrl && event.ImageUrl[0] ? event.ImageUrl[0] : "";
+          imageEl.alt = event.Title;
+
+          // Update title
+          document.getElementById("event-title").textContent = event.Title;
+
+          // Update date
+          document.getElementById("event-date").textContent = this.formatDate(
+            event.Date
+          );
+
+          // Update location (show/hide based on availability)
+          const locationItem = document.getElementById("location-item");
+          const locationEl = document.getElementById("event-location");
+          if (event.Location && event.Location.trim()) {
+            locationEl.textContent = event.Location;
+            locationItem.style.display = "flex";
+          } else {
+            locationItem.style.display = "none";
+          }
+
+          // Update description
+          document.getElementById("event-description").textContent =
+            event.Description;
+
+          // Move to next event for next reload
+          this.currentIndex = (this.currentIndex + 1) % this.events.length;
+          this.saveCurrentIndex();
+
+          console.log("Event displayed. Next index saved:", this.currentIndex);
+
+          // Log the style info after content is loaded
+          setTimeout(() => this.logStyleInfo(), 100);
+        }
+
+        formatDate(dateString) {
+          if (!dateString) return "";
+
+          try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+          } catch (error) {
+            console.error("Error formatting date:", error);
+            return dateString;
+          }
+        }
+      }
+
+      // Initialize the showcase when the page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM loaded, creating EventsShowcase...");
+        new EventsShowcase();
+      });
+    </script>
+  </body>
+</html>
